@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-12">
+
+  </div>
+</div>
+
+
+<hr>
+
+<% @likes.each do |like| %>
+      <div class="card-header">
+        <h4 class="card-title">
+          <a href="/users/<% like.user_id  %>"><%= User.find_by(id: like.user_id).username %></a>
+          <small>
+            <%= Photo.find_by(id: like.photo_id).caption %>
+          </small>
+        </h4>
+      </div>
+
+      <div class="card-body">
+        <a href="/photos/<%= Photo.find_by(id: like.photo_id).id %>">
+          <img src="<%= Photo.find_by(id: like.photo_id).image %>" class="img-fluid">
+        </a>
+      </div>
+      
+      <div>
+      <% if like.user_id == current_user.id %>
+      <a href="/delete_like/<%= like.id %>" class="btn btn-link pull-right">
+              Unlike
+      </a>
+      <% end %>
+      
+      <% @comments = Comment.where(:photo_id => like.photo_id) %>
+        
+      <% @comments.each do |comment| %>
+      <ul class="list-unstyled pt-3">
+              <li class="media mb-2">
+                <div class="media-body">
+                  <h6>
+                    <a href="/users/<%= comment.user_id %>"></a>
+                    <small>
+                      <%= comment.body %>
+                    </small>
+                  </h6>
+                </div> <!-- media-body -->
+              </li>
+      </ul>
+      <% end %>
+      </div>
+<% end %>        
+
